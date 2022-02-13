@@ -1,16 +1,19 @@
 ('use strict');
 import './sass/main.scss';
 import './index.html';
-// import './about.html';
-// import './contact.html';
 
 ///////////////////////////////////////
-// Modal window
+// Selectors
 
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -34,19 +37,20 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-// message.textContent =
-//   'We use cookies for improved functionality and analytics.';
-message.innerHTML =
-  'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
+///////////////////////////////////////
+// Scrolling
 
-const header = document.querySelector('.header');
-header.prepend(message);
-//header.append(message);
-//header.append(message.cloneNode(true));
-//header.after(message);
+btnScrollTo.addEventListener('click', (e) => {
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
 
-document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', () => message.remove());
+///////////////////////////////////////
+// page navigation
+
+document.querySelector('.nav__links').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!e.target.classList.contains('nav__link')) return;
+  document
+    .querySelector(e.target.getAttribute('href'))
+    .scrollIntoView({ behavior: 'smooth' });
+});
