@@ -54,3 +54,27 @@ document.querySelector('.nav__links').addEventListener('click', (e) => {
     .querySelector(e.target.getAttribute('href'))
     .scrollIntoView({ behavior: 'smooth' });
 });
+
+///////////////////////////////////////
+// tabs
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', (e) => {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return;
+
+  tabs.forEach((btn) => btn.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  const content = document.querySelector(
+    `.operations__content--${clicked.dataset.tab}`
+  );
+
+  tabsContent.forEach((tab) =>
+    tab.classList.remove('operations__content--active')
+  );
+  content.classList.add('operations__content--active');
+});
