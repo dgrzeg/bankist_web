@@ -172,3 +172,77 @@ allImages.forEach((img) => imgObserver.observe(img));
 
 ///////////////////////////////////////
 // slider
+
+const slider = () => {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotContainer = document.querySelector('.dots');
+
+  const createDots = () => {
+    slides.forEach((_, i) => {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+  createDots();
+
+  const makeDotActive = (dotPos) => {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach((dot) => dot.classList.remove('dots__dot--active'));
+
+    document
+      .querySelector(`.dots__dot[data-slide="${dotPos}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  const goToSlide = (pos) =>
+    slides.forEach(
+      (slide, i) => (slide.style.transform = `translateX(${100 * (i - pos)}%)`)
+    );
+
+  const nextSlide = () => {
+    if (curSlide === slides.length - 1) curSlide = -1;
+    curSlide++;
+    goToSlide(curSlide);
+    makeDotActive(curSlide);
+  };
+
+  const prevSlide = () => {
+    if (curSlide === 0) curSlide = slides.length;
+    curSlide--;
+    goToSlide(curSlide);
+    makeDotActive(curSlide);
+  };
+
+  //starting position
+  let curSlide = 0;
+  goToSlide(curSlide);
+  makeDotActive(curSlide);
+
+  //right
+  btnRight.addEventListener('click', nextSlide);
+
+  //left
+  btnLeft.addEventListener('click', prevSlide);
+
+  //arrows
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  document.querySelector('.dots').addEventListener('click', (e) => {
+    const clicked = e.target.closest('.dots__dot');
+    if (!clicked) return;
+
+    clicked.classList.add('dots__dot--active');
+    curSlide = clicked.dataset.slide;
+    goToSlide(curSlide);
+    makeDotActive(curSlide);
+  });
+};
+slider();
